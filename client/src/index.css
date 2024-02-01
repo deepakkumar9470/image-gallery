@@ -11,12 +11,13 @@
 body{
     font-family: 'Noto Sans', sans-serif;
     background-color: #0F0F0F;
+    overflow-x: hidden;
 }
 
 
 a{
     text-decoration: none;
-    columns: inherit;
+    color: inherit;
 }
 
 li{

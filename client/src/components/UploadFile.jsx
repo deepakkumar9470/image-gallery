@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { url } from "../api/apiUrl";
 
 const UploadFile = () => {
   const [file, setFile] = useState(null);
-  const [fileDisplay,setFileDisplay] = useState('')
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -21,19 +20,14 @@ const UploadFile = () => {
 
     const formData = new FormData();
     formData.append("myimage", file);
-    console.log(formData)
 
     try {
-      const response = await axios.post(
-        `${url}/uploadimage`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(response);
+      const response = await axios.post(`${url}/uploadimage`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       navigate("/");
     } catch (error) {
       console.error(error);

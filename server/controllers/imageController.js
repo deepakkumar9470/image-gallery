@@ -3,7 +3,7 @@ import path from 'path'
 const __dirname = path.resolve();
 import fs from 'fs'
 export const addImage = async (req, res) => {
-    const file = String(req.file.filename)
+    const file = req.file.filename;
 
     if (!file) {
         res.status(204).json('Please upload file')

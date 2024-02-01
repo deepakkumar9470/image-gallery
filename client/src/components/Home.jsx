@@ -2,21 +2,27 @@ import React, { useState, useEffect } from "react";
 import view from "../assets/eye.svg";
 import trash from "../assets/trash.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { setImages, setError,deleteImage } from "../redux/imageSlice";
+import { setImages, setError, deleteImage } from "../redux/imageSlice";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { imgUrl, url } from "../api/apiUrl";
+import Loader from "./Loader";
+
 const Home = () => {
   const { images, error } = useSelector((state) => state.images);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const fetchImages = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${url}/images`);
       dispatch(setImages(response.data.imageGalleries));
+      setLoading(false);
     } catch (error) {
       dispatch(setError("Error fetching images. Please try again."));
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -27,7 +33,6 @@ const Home = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${url}/image/${id}}`);
-      // dispatch(deleteImage({id}))
       fetchImages();
     } catch (error) {
       dispatch(setError("Error deleting image. Please try again."));
@@ -35,19 +40,24 @@ const Home = () => {
     }
   };
 
+  if (loading) return <Loader />;
   return (
-    <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 mt-28 pl-4">
+    <div className="grid sm:grid-cols-1 pl-4 md:grid-cols-2 md:gap-10 lg:grid-cols-3 lg:pl-6 gap-4 mt-28 md:pl-4">
       {images.length > 0 ? (
         images?.map((item, i) => (
           <div
             key={item.picture}
-            className="w-full h-[250px]  pr-4 md:pr-0 md:w-[400px] md:h-[400px]
+            className="w-full h-[400px]  pr-4 md:pr-0 md:w-[400px] md:h-[400px]
                        
                        rounded-md cursor-pointer shadow-[0 8px 32px 0 rgba( 31, 38, 135, 0.37 )] border-[1px solid rgba( 255, 255, 255, 0.18 )] filter-[blur(4px)]
                        hover:scale-110 transition-all duration-150 relative"
           >
             <img
-              src={item.picture?`${imgUrl}/uploads/${item.picture}` : "https://images.pexels.com/photos/456710/pexels-photo-456710.jpeg?auto=compress&cs=tinysrgb&w=600"}
+              src={
+                item.picture
+                  ? `${imgUrl}/uploads/${item.picture}`
+                  : "https://images.pexels.com/photos/456710/pexels-photo-456710.jpeg?auto=compress&cs=tinysrgb&w=600"
+              }
               alt={item.picture}
               className="w-full h-full object-cover rounded-md"
             />
