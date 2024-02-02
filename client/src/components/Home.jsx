@@ -43,7 +43,7 @@ const Home = () => {
   if (loading) return <Loader />;
   return (
     <div className="grid sm:grid-cols-1 pl-4 md:grid-cols-2 md:gap-10 lg:grid-cols-3 lg:pl-6 gap-4 mt-28 md:pl-4">
-      {images.length > 0 ? (
+      {images?.length > 0 ? (
         images?.map((item, i) => (
           <div
             key={item.picture}
@@ -55,10 +55,10 @@ const Home = () => {
             <img
               src={
                 item.picture
-                  ? `${imgUrl}/uploads/${item.picture}`
+                  ? `${imgUrl}/uploads/${item?.picture}`
                   : "https://images.pexels.com/photos/456710/pexels-photo-456710.jpeg?auto=compress&cs=tinysrgb&w=600"
               }
-              alt={item.picture}
+              alt="galleryimg"
               className="w-full h-full object-cover rounded-md"
             />
 
@@ -77,7 +77,7 @@ const Home = () => {
                 bg-[white] rounded-md"
                 src={trash}
                 alt="trash"
-                onClick={() => handleDelete(item._id)}
+                onClick={() => handleDelete(item?._id)}
               />
             </div>
           </div>
